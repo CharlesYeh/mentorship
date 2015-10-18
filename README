@@ -1,0 +1,8 @@
+Installing node modules:
+`sudo npm init`
+
+Adding node modules:
+`sudo npm install --save <package>`
+
+Running the app:
+`node_modules/nodemon/bin/nodemon.js server.js`

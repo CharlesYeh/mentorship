@@ -11,9 +11,17 @@ module.exports = function(app, passport) {
   app.get('/signup', auth.signup);
 
   // POST dest for logging in
-  app.get('/authCallback', auth.authCallback);
+  app.post('/authCallback', passport.authenticate('local-signin', {
+    successRedirect : '/users',
+    failureRedirect : '/signin',
+    failureFlash : true
+  }), auth.authCallback);
   // POST dest for sign out
-  app.get('/logout', auth.logout);
+  app.post('/logout', auth.logout);
 
-  app.post('/users', users.create);
+  app.post('/users', passport.authenticate('local-signup', {
+    successRedirect : '/users',
+    failureRedirect : '/signup',
+    failureFlash : true
+  }), users.create);
 };
