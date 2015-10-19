@@ -1,5 +1,7 @@
 var database = require('../../config/database');
 
-// POST /users
-exports.create = function(req, res) {
+exports.profile = function(req, res) {
+  res.render('users/profile.jade', {
+    user: req.user
+  });
 };
