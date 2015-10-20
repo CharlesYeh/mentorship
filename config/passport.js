@@ -1,7 +1,12 @@
 var database = require('./database');
 var bcrypt = require('bcrypt-nodejs');
+var bunyan = require('bunyan');
 
 var LocalStrategy = require('passport-local').Strategy;
+
+var log = bunyan.createLogger({
+  name: 'passport',
+});
 
 module.exports = function(passport) {
   // serialize / deserialize between the session var
@@ -19,19 +24,19 @@ module.exports = function(passport) {
 
   // takes a signup request, returns user object
   passport.use('local-signup', new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true,
   }, function(req, username, password, done) {
-    console.log("begin registration.");
+    log.info("begin registration.");
     // make sure username isn't already used
     database.paramQuery("SELECT * FROM users WHERE username = ?", [username], function(err, rows) {
       if (err) {
-        console.log("Error signing up: " + err);
+        log.error("Error signing up: " + err);
         return done(err);
       }
       if (rows.length) {
-        console.log("Username already taken: " + username);
+        log.warn("Username already taken: " + username);
         return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
       } else {
         // create user
@@ -39,7 +44,7 @@ module.exports = function(passport) {
           username: username,
           password: bcrypt.hashSync(password),
         };
-        console.log("Registering user with: " + userObj);
+        log.info("Registering user with: " + userObj);
         database.paramQuery(
           "INSERT INTO users (username, password) VALUES (?, ?)",
           [userObj.username, userObj.password],
@@ -53,12 +58,12 @@ module.exports = function(passport) {
   }));
 
   passport.use('local-signin', new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true,
   }, function(req, username, password, done) {
     // look in mysql
-    console.log("checking login");
+    log.info("checking login");
     database.paramQuery(
       "SELECT * FROM users WHERE username = ?",
       [username],

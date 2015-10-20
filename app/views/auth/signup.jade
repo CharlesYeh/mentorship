@@ -15,6 +15,12 @@ div.container
           | Email: 
       div.col-sm-5
           input.form-control(type="text" name="email" placeholder="Email")
+    div.form-group
+      div.col-sm-1
+        label.control-label(for="password")
+          | Password: 
+      div.col-sm-5
+          input.form-control(type="text" name="password" placeholder="Password")
 
     input(type="hidden" name="type" value=type)
     if type == 'mentor'
