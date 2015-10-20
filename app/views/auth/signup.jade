@@ -1,10 +1,37 @@
-form(method="POST" action="/users")
-  div
-    | Username: 
-    input(type="text" name="username")
-  div
-    | Password: 
-    input(type="text" name="password")
-  div
-    input(type="submit" value="login")
+link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css', rel='stylesheet')
+div.container
+  h1 Mentorship!
+  br
+  form.form-horizontal(method="POST" action="/signup/" + type)
+    div.form-group
+      div.col-sm-1
+        label.control-label(for="username")
+          | Name: 
+      div.col-sm-5
+          input.form-control(type="text" name="username" placeholder="Name")
+    div.form-group
+      div.col-sm-1
+        label.control-label(for="email")
+          | Email: 
+      div.col-sm-5
+          input.form-control(type="text" name="email" placeholder="Email")
+
+    input(type="hidden" name="type" value=type)
+    if type == 'mentor'
+      label.control-label(for="question1")
+        | Why do you want to be a mentor?
+      textarea.form-control(type="text" name="question1" rows=3)
+      label.control-label(for="question1")
+        | Why do you want to be a mentor?
+      textarea.form-control(type="text" name="question2" rows=3)
+    else
+      label.control-label(for="question1")
+        | Why do you want to be a mentee?
+      textarea.form-control(type="text" name="question1" rows=3)
+      label.control-label(for="question2")
+        | Why do you want to be a mentee?
+      textarea.form-control(type="text" name="question2" rows=3)
+    br
+    button.btn.btn-primary(type="submit")
+      | Sign up!
 
